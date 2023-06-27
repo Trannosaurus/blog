@@ -25,8 +25,8 @@ Once you have defined a schema,
 
 1. the schema cannot be changed
 2. Making changes to MongoDB on the DB level, not Mongoose, like adding a attribute makes that document then not visible in Mongoose because it breaks the schema
-* This is very dangerous because during migrations, if migrations aren't aligned with the Mongoose scheme a lot of documents can be lost and wont be queried by Mongoose
-* Those files also will not be recognized by Mongoose so we would have to manually make scripts for these migrations
+    * This is very dangerous because during migrations, if migrations aren't aligned with the Mongoose scheme a lot of documents can be lost and wont be queried by Mongoose
+    * Those files also will not be recognized by Mongoose so we would have to manually make scripts for these migrations
 
 > **_NOTE:_**   Mongoose is a layer over MongoDB so when we define a schema it interacts with Mongoose in the application layer but not at the database level. 
 
