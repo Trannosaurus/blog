@@ -44,3 +44,21 @@ Compared to the workarounds required in MongoDB, this approach provides a higher
 Moreover, since schemas are already defined when using Mongoose with MongoDB, using SQL and defining tables does not impose additional restrictions beyond what is already present in Mongoose. SQL databases add an extra layer of safety in terms of data handling and usage.
 
 
+## Data fetching
+Consider an example where you have a "users" collection and a "comments" collection. Each document in the "comments" collection has a "userId" field that refers to a document in the "users" collection.
+
+Now, let's say you want to display a comment along with the name of the user who posted it. Since the "comments" collection only has the "userId", you would firstly query the "comments" collection to get the comment details. Then you need to take the "userId" from the comment and make a second query to the "users" collection to get the details of the user. 
+
+Here's what it might look like:
+
+```javascript
+// Fetch a comment
+const comment = db.comments.findOne({ _id: commentId });
+
+// Fetch the user related to the comment
+const user = db.users.findOne({ _id: comment.userId });
+
+// Now you have the comment and the user details and can combine or use them as needed
+``` 
+
+This is different from SQL databases where you can use the JOIN operation to get related data in a single query
