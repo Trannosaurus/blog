@@ -43,22 +43,24 @@ Compared to the workarounds required in MongoDB, this approach provides a higher
 
 Moreover, since schemas are already defined when using Mongoose with MongoDB, using SQL and defining tables does not impose additional restrictions beyond what is already present in Mongoose. SQL databases add an extra layer of safety in terms of data handling and usage.
 
+## Data Fetching
 
-## Data fetching
 Consider an example where you have a "users" collection and a "comments" collection. Each document in the "comments" collection has a "userId" field that refers to a document in the "users" collection.
 
-Now, let's say you want to display a comment along with the name of the user who posted it. Since the "comments" collection only has the "userId", you would firstly query the "comments" collection to get the comment details. Then you need to take the "userId" from the comment and make a second query to the "users" collection to get the details of the user. 
+Now, let's say you want to display a comment along with the name of the user who posted it. In MongoDB, retrieving this information involves multiple queries due to the lack of JOIN operations.
 
-Here's what it might look like:
+Firstly, you would query the "comments" collection to get the comment details using the comment ID:
 
 ```javascript
-// Fetch a comment
 const comment = db.comments.findOne({ _id: commentId });
+```
 
-// Fetch the user related to the comment
+However, the comment document only contains the "userId" field, not the user details. To retrieve the user details, you need to make a second query to the "users" collection using the retrieved "userId":
+
+```javascript
 const user = db.users.findOne({ _id: comment.userId });
+```
 
-// Now you have the comment and the user details and can combine or use them as needed
-``` 
+Now you have the comment and the user details, and you can combine or use them as needed. However, it's important to note that this approach of fetching related data from multiple collections can result in repetitive and less efficient querying, especially when dealing with large datasets or complex relationships.
 
-This is different from SQL databases where you can use the JOIN operation to get related data in a single query
+In contrast, SQL databases offer the JOIN operation, allowing you to retrieve related data in a single query by joining the "comments" and "users" tables based on a common field such as the user ID. This approach can simplify data retrieval and improve performance, particularly in scenarios involving complex data relationships.
